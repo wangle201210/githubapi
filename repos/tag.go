@@ -2,45 +2,44 @@ package repos
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 
 	"github.com/wangle201210/githubapi"
 )
 
-const tagUrl = "tags"
+const TagUrl = "tags"
 
-type commit struct {
+type Commit struct {
 	Sha string `json:"sha"`
 	Url string `json:"url"`
 }
 
-type tag struct {
+type Tag struct {
 	Name       string `json:"name"`
 	ZipballUrl string `json:"zipball_url"`
 	TarballUrl string `json:"tarball_url"`
-	Commit     commit `json:"commit"`
+	Commit     Commit `json:"commit"`
 }
 
-type tagsList []tag
+type TagsList []Tag
 
-func (re *Repos) GetTagsList() (list tagsList) {
-	url := re.Url(tagUrl)
+func (re *Pkg) GetTagsList() (list TagsList, err error) {
+	url := re.Url(TagUrl)
 	body, err := githubapi.HttpGet(url)
 	if err != nil {
-		fmt.Printf("Get info from github error: %s", err)
 		return
 	}
-	if err = json.Unmarshal(body, &list); err != nil {
-		fmt.Printf("Unmarshal body error: %s", err)
-		return
-	}
+	err = json.Unmarshal(body, &list)
 	return
 }
 
-func (re *Repos) LastTag() tag {
-	list := re.GetTagsList()
-	if len(list) < 1 {
-		fmt.Print("There is no tag")
+func (re *Pkg) LastTag() (tag Tag, err error) {
+	list, err := re.GetTagsList()
+	if err != nil {
+		return
 	}
-	return list[0]
+	if len(list) < 1 {
+		return tag, errors.New("there is no tag")
+	}
+	return list[0], nil
 }
