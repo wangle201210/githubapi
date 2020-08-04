@@ -6,13 +6,24 @@
 import "github.com/wangle201210/githubapi/repos"
 ...
 var pkg = repos.Pkg{"beego", "bee"}
+
 // 获取仓库信息
-repos, err := pkg.GetRepos()
-// 获取这个仓库的所有tags
+re, err := pkg.GetRepos()
+
+// 获取tags
 list, err := pkg.GetTagsList()
-// 获取这个仓库的所有pull
-list, err := pkg.GetPullList()
+
 // 获取最新tag
 tag, err := pkg.LastTag()
+
+// 获取pull
+list, err := pkg.GetPullsList()
+
+// 获取comment
+comment, err := repos.GetCommentsList()
+
+// 获取全部issues
+issues, err := repos.GetIssuesList()
+
 ...
 ```

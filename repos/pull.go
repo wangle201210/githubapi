@@ -103,7 +103,7 @@ type Head struct {
 type PullList []Pull
 
 // List pull requests
-func (re *Pkg) GetPullList() (list PullList, err error) {
+func (re *Pkg) GetPullsList() (list PullList, err error) {
 	url := re.Url(PullUrl)
 	body, err := githubapi.HttpGet(url)
 	if err != nil {

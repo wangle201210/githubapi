@@ -17,19 +17,19 @@ func TestUrl(t *testing.T) {
 }
 
 func TestGetRepo(t *testing.T) {
-	repos, err := pkg.GetRepos()
+	re, err := pkg.GetRepos()
 	if err != nil {
 		t.Errorf("get repos err: %s", err)
 		return
 	}
-	if repos.ID == 0 {
-		t.Errorf("repos is %+v", repos)
+	if re.ID == 0 {
+		t.Errorf("repos is %+v", re)
 		t.Errorf("repos must have id but got null, ")
 	}
 }
 
 func TestGetPullList(t *testing.T) {
-	list, err := pkg.GetPullList()
+	list, err := pkg.GetPullsList()
 	if err != nil {
 		t.Errorf("get pull list err: %s", err)
 		return
@@ -61,5 +61,30 @@ func TestLastTag(t *testing.T) {
 	if tag.Name == "" {
 		t.Errorf("tag list is %+v", tag)
 		t.Errorf("tag must have name but got null")
+	}
+}
+
+
+func TestGetIssuesList(t *testing.T) {
+	list, err := pkg.GetIssuesList()
+	if err != nil {
+		t.Errorf("get issue list err: %s", err)
+		return
+	}
+	if len(list) > 0 && list[0].ID == 0 {
+		t.Errorf("issue list is %+v", list)
+		t.Errorf("issue must have name but got null")
+	}
+}
+
+func TestGetCommentList(t *testing.T) {
+	list, err := pkg.GetCommentsList()
+	if err != nil {
+		t.Errorf("get comment list err: %s", err)
+		return
+	}
+	if len(list) > 0 && list[0].ID == 0 {
+		t.Errorf("comment list is %+v", list)
+		t.Errorf("comment must have id but got null")
 	}
 }
